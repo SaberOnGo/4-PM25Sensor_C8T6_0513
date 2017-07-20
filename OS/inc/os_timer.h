@@ -51,6 +51,7 @@ void OS_TimerCheck(void);
 void OS_TimerTickIncrease(uint32_t tick);
 //void OS_TimerTask(void);
 
+#define  os_timer_check()         OS_TimerCheck()
 #define  os_timer_disarm(timer)  OS_TimerStop(timer)
 #if 0
 void os_timer_setfn(os_timer_t *timer, os_timer_func_t * func, void *parg)               // º¯ÊýÊµÏÖ

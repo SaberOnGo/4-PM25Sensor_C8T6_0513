@@ -667,7 +667,7 @@ static void TimerCheckPM25_CallBack(void * arg)
     {
        rx_pm25 = 0;
 #if 0
-	   os_printf("time = %ld ms\r\n\r\n", Sys_GetRunTime() * 10);
+	   os_printf("time = %ld ms\r\n\r\n", os_get_tick() * 10);
 	   os_printf("PM1.0[CF] = %d ug/m3\r\n", tPM25.pm1_cf1);
 	   os_printf("PM2.5[CF] = %d ug/m3\r\n", tPM25.pm25_cf1);
 	   os_printf("PM10[CF]  = %d ug/m3\r\n\r\n", tPM25.pm10_cf1);

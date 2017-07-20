@@ -4,14 +4,7 @@
 #include <string.h>
 #include "TimerManager.h"
 
-// get system running time since power on
-// return: run time, unit: 10 ms
-#if 0
-uint32_t FLASH_SAVE  Sys_GetRunTime(void)
-{
-   return OS_GetSysTick();
-}
-#endif
+
 
 
 /*****************************************************************************

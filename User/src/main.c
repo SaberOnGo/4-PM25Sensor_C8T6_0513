@@ -35,7 +35,7 @@ int main(void)
             flag10ms = 0;
 			key_result = key_scan();
 		    key_process(key_result);
-            OS_TimerCheck();
+            os_timer_check();
 
 			if( (OS_GetSysTick() % 100) == 0)
 			{
