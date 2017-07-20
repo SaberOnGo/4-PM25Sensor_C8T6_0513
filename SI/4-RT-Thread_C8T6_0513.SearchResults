@@ -1,0 +1,4 @@
+---- FL_TOTAL_SIZE Matches (3 in 1 files) ----
+Spi_flash_interface.h (driver\inc):#define FL_TOTAL_SIZE      FL_SIZE_KB(2048)   // W25Q16
+Spi_flash_interface.h (driver\inc):#define FL_TOTAL_SIZE      FL_SIZE_KB(4096)     // W25Q32
+Spi_flash_interface.h (driver\inc):#define SPI_FLASH_SECTOR_COUNT		((FL_TOTAL_SIZE  - SPI_FLASH_START_ADDR) / SPI_FLASH_SECTOR_SIZE)  //  SPI FLASH 中的FatFs可用总扇区数
