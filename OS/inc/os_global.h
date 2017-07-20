@@ -97,7 +97,7 @@ E_BOOL OS_IsTimeout(uint32_t timetick);
 
 //uint32_t FLASH_SAVE Sys_GetRunTime(void);
 #define os_get_tick()   OS_GetSysTick()
-void FLASH_SAVE Sys_DelayMs(uint32_t ms);  
+void FLASH_SAVE Sys_DelayMs(uint32_t ms);
 E_BOOL FLASH_SAVE Sys_IsBigEndian(void);
 E_RESULT Sys_GetVersion(uint8_t *outString, int16_t stringSize, E_VERION_TYPE index);
 void JumpToBootloader(void);
