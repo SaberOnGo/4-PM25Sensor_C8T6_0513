@@ -1,4 +1,4 @@
----- FL_TOTAL_SIZE Matches (3 in 1 files) ----
-Spi_flash_interface.h (driver\inc):#define FL_TOTAL_SIZE      FL_SIZE_KB(2048)   // W25Q16
-Spi_flash_interface.h (driver\inc):#define FL_TOTAL_SIZE      FL_SIZE_KB(4096)     // W25Q32
-Spi_flash_interface.h (driver\inc):#define SPI_FLASH_SECTOR_COUNT		((FL_TOTAL_SIZE  - SPI_FLASH_START_ADDR) / SPI_FLASH_SECTOR_SIZE)  //  SPI FLASH 中的FatFs可用总扇区数
+---- Sys_GetRunTime Matches (3 in 3 files) ----
+Os_global.c (os\src):uint32_t FLASH_SAVE  Sys_GetRunTime(void)
+Os_global.h (os\inc):#define Sys_GetRunTime()   OS_GetSysTick()
+PM25Sensor.c (driver\src):	   os_printf("time = %ld ms\r\n\r\n", Sys_GetRunTime() * 10);
