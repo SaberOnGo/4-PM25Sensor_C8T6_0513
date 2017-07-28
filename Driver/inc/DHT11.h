@@ -10,6 +10,7 @@
 #define DHT_IO_READ()      READ_REG_32_BIT(DHT_IO_PORT->IDR, DHT_IO_Pin)   
 #define DHT_IO_H()         SET_REG_32_BIT(DHT_IO_PORT->BSRR, DHT_IO_Pin)  // 输出高, GPIOx->BSRR = GPIO_Pin;
 #define DHT_IO_L()         SET_REG_32_BIT(DHT_IO_PORT->BRR,  DHT_IO_Pin)  // 输出低  GPIOx->BRR = GPIO_Pin;
+#define DHT_RCC_APBPeriphClockCmdEnable()       RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE)   // PCLK2 = HCLK = 48MHz
 
 // DHT 响应错误码
 typedef enum

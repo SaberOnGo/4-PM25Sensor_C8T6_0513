@@ -1,4 +1,4 @@
-;#<FEEDBACK># ARM Linker, 4.1 [Build 894]: Last Updated: Wed Jul 19 15:49:57 2017
+;#<FEEDBACK># ARM Linker, 4.1 [Build 894]: Last Updated: Fri Jul 28 18:10:04 2017
 ;VERSION 0.2
 ;FILE application.o
 Set_USBClock <= USED 0
@@ -49,7 +49,6 @@ Util_NumToString <= USED 0
 OS_TimerIsStop <= USED 0
 OS_TimerTickIncrease <= USED 0
 ;FILE pm25sensor.o
-HCHO_Indicate <= USED 0
 HCHO_QueryHCHOConcentration <= USED 0
 HCHO_SwitchToActiveMode <= USED 0
 HCHO_SwitchToQueryMode <= USED 0

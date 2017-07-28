@@ -130,8 +130,9 @@ void key_process(uint16_t key)
 		   {
 		   	  os_printf("NEXT KEY S\n"); 
 	       }break;
-		   case NEXT_KEY_L:
+		   case NEXT_KEY_L:   // 长按此键进行校正
 		   {
+		   	  HCHO_CaliSet();
 		      os_printf("NEXT KEY L\n");
 		   }break;
 		  

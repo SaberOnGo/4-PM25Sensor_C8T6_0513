@@ -93,9 +93,14 @@ E_RESULT SDRR_SensorPointToString(T_SDRR *sdrr, uint8_t * buf, uint16_t * size)
    #endif
 
    // 条目 日期 时间
+   #if 0
    len += os_snprintf(&buf[len], left_size, "[%05d]  %02d-%02d-%02d %02d:%02d:%02d  ", total_item_count, 
                        sdrr->time.year, sdrr->time.month, sdrr->time.day, 
                        sdrr->time.hour, sdrr->time.min,   sdrr->time.sec);
+   #else
+   len += os_snprintf(&buf[len], left_size, "[%05d]  %ld s  ", total_item_count, os_get_tick() / 100 );
+   #endif
+   
    left_size = *size - len;
    len += os_snprintf(&buf[len], left_size, "%c.%03d  %3d    %3d.%c  %2d%%\r\n", (sdrr->hcho % 10000 / 1000) + 0x30,
    	                    sdrr->hcho % 1000, sdrr->pm2p5 % 1000, sdrr->temp % 1000 / 10, (sdrr->temp % 10) + 0x30, sdrr->RH % 100);
@@ -117,6 +122,8 @@ E_RESULT SDRR_WriteRecordToFile(char * file_name)
 	
 	item_len = sizeof(sector_buf) - cur_str_len;  // 缓冲区剩余可用的长度 
 	res = SDRR_SensorPointToString(&tSDRR, &sector_buf[cur_str_len], &item_len);
+    //os_memset(&tSDRR, 0, sizeof(tSDRR));  // 清除记录的传感器数据
+	
 	cur_str_len += item_len;
 	left_len = sizeof(sector_buf) - cur_str_len;
 
@@ -156,6 +163,7 @@ E_RESULT SDRR_WriteRecordToFile(char * file_name)
 ******************************/
 E_RESULT SDRR_SaveSensorPoint(E_SensorType type, void  * data)
 {
+	static uint32_t save_time_out = 0;
 	
 	switch(type)
 	{
@@ -192,8 +200,13 @@ E_RESULT SDRR_SaveSensorPoint(E_SensorType type, void  * data)
 	tSDRR.sensor_mask |= 1 << SENSOR_TIME;
     if(tSDRR.sensor_mask == ( (1 << (SENSOR_END)) - 1))  // 各传感器节点已全部保存
 	{
-	   os_printf("ready to wirte data point to file, tick = %ld\n", OS_GetSysTick());
-	   SDRR_WriteRecordToFile(SENSOR_TXT_FILE_NAME);
+	   if(OS_IsTimeout(save_time_out))
+	   {
+	       os_memset(&tSDRR, 0, sizeof(tSDRR));
+	       save_time_out = OS_SetTimeout(SEC(60));
+	       os_printf("ready to wirte data point to file, tick = %ld\n", OS_GetSysTick());
+	       SDRR_WriteRecordToFile(SENSOR_TXT_FILE_NAME);
+	   }
 	}
 
 	return APP_SUCCESS;

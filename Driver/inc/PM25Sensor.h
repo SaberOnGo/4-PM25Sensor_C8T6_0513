@@ -86,6 +86,7 @@ void HCHO_SwitchToActiveMode(void);
 void HCHO_Indicate(uint16_t val);
 void HCHO_DisplayInit(uint8_t display_mode);
 void LED_IndicateColorOfHCHO(void);
+void HCHO_CaliSet(void);
 
 //#endif
 

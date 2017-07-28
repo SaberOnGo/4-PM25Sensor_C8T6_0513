@@ -157,7 +157,9 @@ void NVIC_Configuration(void)
 void AppInit(void)
 {
    RCC_ClocksTypeDef rcc_clocks;
-
+   char time_str[16];
+   char ver_str[16];
+   
    GLOBAL_DISABLE_IRQ();
    NVIC_Configuration();
    
@@ -186,12 +188,6 @@ void AppInit(void)
    os_printf("app version: %s %s %s\r\n", SOFT_VERSION, __DATE__, __TIME__);
    #endif
 
-   
-
-
-   
-   
-   
    usb_main();
   //sfud_demo_task();
    //delay_ms(1000);
@@ -205,8 +201,13 @@ void AppInit(void)
    key_gpio_init();
    LED_Init();
    LED_Flash(8);
+
+   os_memset(time_str,  0, sizeof(time_str));
+   os_memset(ver_str,   0, sizeof(ver_str));
+   os_snprintf(time_str, sizeof(time_str),  "%s ", __DATE__);
+   os_strncpy(ver_str, SOFT_VERSION, sizeof(ver_str));
    
-   LCD1602_WriteString(0, 0, "sensor init...");
-   LCD1602_WriteString(1, 0, "please wait...");
+   LCD1602_WriteString(0, 0, (const uint8_t *)ver_str);
+   LCD1602_WriteString(1, 0, (const uint8_t *)time_str);
 }
 

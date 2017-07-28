@@ -61,6 +61,8 @@ static volatile uint16_t hcho_ppb[18];   // HCHO 气体体积分数, ppb
 static volatile uint16_t mass_fraction;       // HCHO 质量分数, ug/m3
 static volatile uint16_t new_ppb = 0;         // 最新的甲醛值
 static volatile uint16_t aver_ppb = 0;        // 平均 ppb 值 = 0.001 ppm
+static uint16_t cali_ppb  = 0;                // 校正值
+static uint16_t cali_mass = 0;
 static volatile uint8_t  rx_count = 0;        // 接收计数
 static volatile uint8_t  is_power_first = E_TRUE;   // 开机后第一次运行
 static volatile uint8_t rx_hcho = 0;            // 是否有hcho 传感器的数据过来
@@ -457,12 +459,6 @@ static void TimerCalculator_CallBack(void * arg)
 			{
 			   aver_ppb = HCHO_CalculateAverageVal(HCHO_PPB_ARRAY_SIZE);
 			}
-			if(65 < aver_ppb && aver_ppb <= 79)
-			{
-			    aver_ppb -= 15;  //校正
-			}
-			else if(aver_ppb > 79) aver_ppb -= 25;  //校正
-			
 	        mass_fraction =	(uint16_t)((double)aver_ppb * 30 / 22.4); 
 			
             rx_count = 0;
@@ -545,13 +541,13 @@ static void HCHO_DisplayPPMInit(uint16_t val)
 // 温度带一位小数
 static void TempHumi_Display(uint16_t temp, uint16_t humi)
 {
-   LCD1602_SetXY(1, 0);
+   LCD1602_SetXY(0, 0);
    //LCD1602_WriteData(temp % 1000 / 100 + 0x30);
    LCD1602_WriteData(temp % 100 / 10 + 0x30);
    LCD1602_WriteData(temp % 10 + 0x30);
    //LCD1602_WriteData('.');
    
-   LCD1602_SetXY(1, 10);
+   LCD1602_SetXY(0, 10);
    LCD1602_WriteData(humi % 100 / 10 + 0x30);
    LCD1602_WriteData(humi % 10 + 0x30);
 }
@@ -559,45 +555,68 @@ static void TempHumi_Display(uint16_t temp, uint16_t humi)
 // 温度显示初始化
 static void TEMP_DisplayInit(void)
 {
+   LCD1602_ClearScreen();
    TempHumi_Display(tDHT.temp_H, tDHT.humi_H);
-   LCD1602_WriteString (1,  3, "'C");
-   LCD1602_WriteString (1,  7, "RH ");
-   LCD1602_WriteString (1,  12, "%");
+   LCD1602_WriteString (0,  3, "'C");
+   LCD1602_WriteString (0,  7, "RH ");
+   LCD1602_WriteString (0,  12, "%");
 }
 
 void HCHO_DisplayInit(uint8_t display_mode)
 {
+   uint16_t mass = mass_fraction;
+   uint16_t aver = aver_ppb;
+   
    switch(display_mode)
    {
       case HCHO_DISPLAY_MASSFRACT:
 	  {
-	  	 HCHO_DisplayMassFractInit(mass_fraction);
+	  	 if(cali_mass)
+	  	 {
+	  	    mass = (mass_fraction > cali_mass) ? (mass_fraction - cali_mass) : 0;
+	  	 }
+	  	 HCHO_DisplayMassFractInit(mass);
 	  }break;
 	  case HCHO_DISPLAY_PPM:
 	  {
-	  	 HCHO_DisplayPPMInit(aver_ppb);
+		 if(cali_ppb)
+		 {
+		    aver = (aver_ppb > cali_ppb) ? (aver_ppb - cali_ppb) : 0;
+		 }
+	  	 HCHO_DisplayPPMInit(aver);
 	  }break;
    }
-   TEMP_DisplayInit();
+   //TEMP_DisplayInit();
    if(is_rgb_on)LED_IndicateColorOfHCHO();
-   //HCHO_Indicate(mass_fraction);
+   HCHO_Indicate(mass);
 }
 static void HCHO_DisplayValue(uint8_t display_mode)
 {
+   uint16_t mass = mass_fraction;
+   uint16_t aver = aver_ppb;
+   
    switch(display_mode)
    {
       case HCHO_DISPLAY_MASSFRACT:
 	  {
-	  	 HCHO_DisplayMassFract(mass_fraction);
+	  	 if(cali_mass)
+	  	 {
+	  	    mass = (mass_fraction > cali_mass) ? (mass_fraction - cali_mass) : 0;
+	  	 }
+	  	 HCHO_DisplayMassFract(mass);
 	  }break;
 	  case HCHO_DISPLAY_PPM:
 	  {
-	  	 HCHO_DisplayPPM(aver_ppb);
+	  	 if(cali_ppb)
+		 {
+		    aver = (aver_ppb > cali_ppb) ? (aver_ppb - cali_ppb) : 0;
+		 }
+	  	 HCHO_DisplayPPM(aver);
 	  }break;
    }
-   TempHumi_Display(tDHT.temp_H, tDHT.humi_H);
+   //TempHumi_Display(tDHT.temp_H, tDHT.humi_H);
    if(is_rgb_on)LED_IndicateColorOfHCHO();
-   //HCHO_Indicate(mass_fraction);
+   HCHO_Indicate(mass);
 }
 
 // 根据甲醛值提示
@@ -610,17 +629,17 @@ void HCHO_Indicate(uint16_t val)
     #if 1
     if(val < 80)
     {
-       LCD1602_WriteString(1,  0, "Good          ");
+       LCD1602_WriteString(1,  0, "Good       ");
 	   if(is_rgb_on)LED_AqiIndicate(AQI_GOOD);             // 绿灯
     }
 	else if(val < 500)
 	{
-	   LCD1602_WriteString(1,  0, "Unhealthy     ");
+	   LCD1602_WriteString(1,  0, "Unhealthy  ");
 	   if(is_rgb_on)LED_AqiIndicate(AQI_Moderate);        // 黄灯
 	}
 	else
 	{
-	   LCD1602_WriteString(1,  0, "Very Unhealthy");
+	   LCD1602_WriteString(1,  0, "Badly      ");
 	   if(is_rgb_on)LED_AqiIndicate(AQI_VeryUnhealthy);  // 显示红灯
 	}
 	#endif
@@ -647,18 +666,58 @@ uint8_t HCHO_CheckSum(uint8_t * buf, uint16_t len)
 }
 
 //#endif
-#include "SDRR.h"
 
-static os_timer_t tTimerCheckPM25;
-static void TimerCheckPM25_CallBack(void * arg)
+
+#define DIS_HCHO       0
+#define DIS_TEMP_HUMI  1
+
+static os_timer_t tTimerSwitchDisplay;
+static uint8_t which_to_display = DIS_HCHO;  // 显示切换标志位, 0: 显示甲醛; 1: 显示温湿度
+static E_BOOL need_to_clear_screen = E_TRUE; // 是否需要清除屏幕
+
+// 温湿度显示与甲醛显示互相切换, 例如 6s 显示甲醛浓度, 3 s 显示温湿度
+static void TimerSwitchDisplay_CallBack(void * arg)
 {
-    static uint8_t is_rx_hcho_first_time = E_TRUE; // 是否第一次显示
+    which_to_display ^= 1;  // 显示切换
+    need_to_clear_screen = E_TRUE;
+
+	if(which_to_display == DIS_HCHO)
+		os_timer_arm(&tTimerSwitchDisplay, 1000, 0);  // 10 s 循环定时器
+	else
+		os_timer_arm(&tTimerSwitchDisplay, 500, 0);  // 5 s 循环定时器
+}
+
+static uint8_t is_cal = 0; // 是否校正: 0 不校正; 1: 校正
+
+// 甲醛校正设置
+void HCHO_CaliSet(void)
+{
+    is_cal ^= 1;
+	if(is_cal)
+    {
+        LCD1602_WriteString(1, 13, "CAL");
+		cali_ppb  = aver_ppb;  // 作为校正
+		cali_mass = (uint16_t)((double)cali_ppb * 30 / 22.4); 
+	}
+    else
+    {
+        LCD1602_WriteString(1, 13, "   ");
+		cali_ppb  = 0;
+		cali_mass = 0;
+    }
+}
+
+#include "SDRR.h"
+static os_timer_t tTimerSensorTask;  // 传感器管管理的定时器
+static void TimerSensorTask_CallBack(void * arg)
+{
+    //static uint8_t is_rx_hcho_first_time = E_TRUE; // 是否第一次显示
     static uint8_t is_rx_pm25_first_time = E_TRUE;    // 是否第一次显示
     
 	#if 0
     if(TryTakePM25_Sem() == ON_USING)  // 正在被占用
     {
-       os_timer_arm(&tTimerCheckPM25, 1, 0);
+       os_timer_arm(&tTimerSensorTask, 1, 0);
 	   return;
     }
 	#endif
@@ -666,24 +725,6 @@ static void TimerCheckPM25_CallBack(void * arg)
     if(rx_pm25)
     {
        rx_pm25 = 0;
-#if 0
-	   os_printf("time = %ld ms\r\n\r\n", os_get_tick() * 10);
-	   os_printf("PM1.0[CF] = %d ug/m3\r\n", tPM25.pm1_cf1);
-	   os_printf("PM2.5[CF] = %d ug/m3\r\n", tPM25.pm25_cf1);
-	   os_printf("PM10[CF]  = %d ug/m3\r\n\r\n", tPM25.pm10_cf1);
-	   os_printf("PM1.0[air]  = %d ug/m3\r\n", tPM25.pm1_air);
-	   os_printf("PM2.5[air]  = %d ug/m3\r\n", tPM25.pm25_air);
-	   os_printf("PM10[air]   = %d ug/m3\r\n\r\n", tPM25.pm10_air);
-	   os_printf("PC0.3um  = %ld\r\n", tPM25.PtCnt_0p3um);
-	   os_printf("PC0.5um  = %ld\r\n", tPM25.PtCnt_0p5um);
-	   os_printf("PC1.0um  = %ld\r\n", tPM25.PtCnt_1p0um);
-	   os_printf("PC2.5um  = %ld\r\n", tPM25.PtCnt_2p5um);
-	   os_printf("PC5.0um  = %ld\r\n", tPM25.PtCnt_5p0um);
-	   os_printf("PC10 um  = %ld\r\n\r\n", tPM25.PtCnt_10p0um);
-	   os_printf("hcho = %d mg/m3 \r\n", tPM25.extra.hcho / 1000);
-	   os_printf("hcho = %d, ver[0] = 0x%x, ver[1] = 0x%x\r\n", tPM25.extra.hcho, tPM25.extra.ver[0], tPM25.extra.ver[1]);
-	   os_printf("sum = 0x%x\r\n\r\n", tPM25.sum);
-#endif
 
 	   if(is_rx_pm25_first_time == E_TRUE)
 	   {
@@ -697,39 +738,67 @@ static void TimerCheckPM25_CallBack(void * arg)
     }
 	
 	if(is_disp_hcho)
-	{
+	{ 
+           static uint16_t last_temp = 0;
+		   static uint16_t last_humi = 0;
+		   
 		   is_disp_hcho = E_FALSE;
-		   if(is_rx_hcho_first_time == E_TRUE)
+		   if(need_to_clear_screen)
 		   {
-		      HCHO_DisplayInit(key_get_cur_display_mode());  // 第一次初始化清屏
-			  is_rx_hcho_first_time = E_FALSE;
+		          need_to_clear_screen = E_FALSE;  
+				  if(which_to_display == DIS_HCHO)
+				  {
+				     HCHO_DisplayInit(key_get_cur_display_mode());  // 甲醛显示初始化清屏
+				     if(is_cal)LCD1602_WriteString(1, 13, "CAL");
+				  }
+				  else
+				  {
+				     last_temp = tDHT.temp_H; last_humi = tDHT.humi_H;
+				     TEMP_DisplayInit();
+				  }
 		   }
 		   else
 		   {
-		      HCHO_DisplayValue(key_get_cur_display_mode());
+			     if(which_to_display == DIS_HCHO)
+			     {
+			         HCHO_DisplayValue(key_get_cur_display_mode());
+			     }
+				 else
+				 {
+				     if(last_temp != tDHT.temp_H || last_humi != tDHT.humi_H)  // 防止频繁刷新屏幕
+				     {
+				        last_temp = tDHT.temp_H; last_humi = tDHT.humi_H;
+ 					 	TempHumi_Display(tDHT.temp_H, tDHT.humi_H);
+				     }
+				}
 		   }
 
            do
            {
                static uint32_t sec = 0;
-
-			   if(OS_SetTimeout(sec) && (OS_GetSysTick() > SEC(15 * 60)))  // 开机后 15分钟开始记录
+			   
+			   if(OS_SetTimeout(sec) && (OS_GetSysTick() > SEC(5 * 60)))  // 开机后 5分钟开始记录
 			   {
-			       os_printf("save pm2.5 = %d ug/m3, tick = %ld s\n", mass_fraction, OS_GetSysTick() / 100);
-			       sec = OS_SetTimeout(SEC(5 * 60));  // 5 分钟记录一次
-			       SDRR_SaveSensorPoint(SENSOR_HCHO, (void *)&mass_fraction);
+			       uint16_t mass = mass_fraction;
+			       if(cali_mass) mass = (mass_fraction > cali_mass) ? (mass_fraction - cali_mass) : 0; 
+			       os_printf("save pm2.5 = %d ug/m3, tick = %ld s\n", mass, OS_GetSysTick() / 100);
+			       sec = OS_SetTimeout(SEC(1 * 60));  // 1 分钟记录一次
+			       SDRR_SaveSensorPoint(SENSOR_HCHO, (void *)&mass);
 			   }
            }
 		   while(0);
 	}
-	
-    os_timer_arm(&tTimerCheckPM25, 35, 0);  //500 ms 后
+    os_timer_arm(&tTimerSensorTask, 35, 0);  //350 ms 后
 }
 
 void LED_IndicateColorOfHCHO(void)
 {
    E_AQI_LEVEL level;
 
+   uint16_t mass = mass_fraction;
+   
+   if(cali_mass)mass = (mass_fraction > cali_mass) ? (mass_fraction - cali_mass) : 0; 
+   
    if(mass_fraction < 80)
    {
       level = AQI_GOOD;
@@ -749,6 +818,8 @@ void LED_IndicateColorOfHCHO(void)
    LED_AqiIndicate(level);
 }
 
+
+
 void PM25_Init(void)
 {
    #if (SENSOR_SELECT == HCHO_SENSOR)
@@ -756,12 +827,15 @@ void PM25_Init(void)
    //HCHO_SwitchToActiveMode();
    #endif
    
-   os_timer_setfn(&tTimerCheckPM25, TimerCheckPM25_CallBack, NULL);
-   os_timer_arm(&tTimerCheckPM25, 200, 0);  // 2 s后
+   os_timer_setfn(&tTimerSensorTask, TimerSensorTask_CallBack, NULL);
+   os_timer_arm(&tTimerSensorTask, 200, 0);  // 2 s后
    
    //#if (SENSOR_SELECT == HCHO_SENSOR)
    os_timer_setfn(&tTimerCalculator, TimerCalculator_CallBack, NULL);  // 定时器初始化, 设置回调环境
    //#endif
+
+   os_timer_setfn(&tTimerSwitchDisplay, TimerSwitchDisplay_CallBack, NULL);  
+   os_timer_arm(&tTimerSwitchDisplay, 800, 0);  // 5 s 定时
 }
 
 

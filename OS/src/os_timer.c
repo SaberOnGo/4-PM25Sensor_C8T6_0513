@@ -15,7 +15,7 @@ void OS_TimerInit(T_OS_TIMER * timer,
    timer->timeout_func = timeout_func;
    timer->param = param;
    timer->init_tick = time;
-   timer->timeout_tick = Sys_GetRunTime() + time;
+   timer->timeout_tick = os_get_tick() + time;
    timer->flag = flag;
 }
 
@@ -59,7 +59,7 @@ void OS_TimerStop(T_OS_TIMER * timer)
    }
 }
 
-// �ж϶�ʱ���Ƿ���ֹͣ: 1: ֹͣ; 0: �Ѽ���
+// ?ж????????????: 1: ??; 0: ?????
 uint8_t OS_TimerIsStop(T_OS_TIMER * timer)
 {
    return ( !(timer->flag  & OS_TIMER_FLAG_ACTIVATED));
@@ -71,7 +71,7 @@ void OS_TimerCheck(void)
    
    for(cur = head_handle; cur; cur = cur->next)
    {
-      if(Sys_GetRunTime() >= cur->timeout_tick &&
+      if(os_get_tick() >= cur->timeout_tick &&
 	  	(cur->flag & OS_TIMER_FLAG_ACTIVATED))	
       {
 		   TIMER_DEBUG("timer tick out: %ld ms\r\n", Sys_GetRunTime());
@@ -81,7 +81,7 @@ void OS_TimerCheck(void)
 		   }
 		   else
 		   {
-		      cur->timeout_tick = Sys_GetRunTime() + cur->init_tick;
+		      cur->timeout_tick = os_get_tick() + cur->init_tick;
 		   }
 		   cur->timeout_func(cur->param);
       }
@@ -96,7 +96,7 @@ void OS_TimerTickIncrease(uint32_t tick)
 #if 0
 void OS_TimerTask(void)
 {
-   if(Sys_GetRunTime() > (timer_tick + 10))  // 10 ms
+   if(os_get_tick() > (timer_tick + 10))  // 10 ms
    {
       timer_tick = Sys_GetRunTime();
       OS_TimerCheck();
@@ -111,11 +111,14 @@ void os_timer_setfn(os_timer_t *timer, os_timer_func_t * func, void *parg)
 }
 #endif
 
-// tick Ϊϵͳ�δ�ʱ����ʱ���, ����Ϊ10ms
+// 设置定时器
+// 参数: os_timer_t * timer : 定时器指针
+// uint32_t tick: 定时的tick 数
+// uint8_t is_repeat: 是否为循环定时器; 1: 循环定时器; 0: 单次定时器
 void os_timer_arm(os_timer_t * timer, uint32_t tick, uint8_t is_repeat)
 {
    timer->init_tick = tick;
-   timer->timeout_tick = Sys_GetRunTime() + tick;
+   timer->timeout_tick = os_get_tick() + tick;
    if(is_repeat)
    {
       timer->flag |= OS_TIMER_FLAG_PERIODIC;  // timer repeat

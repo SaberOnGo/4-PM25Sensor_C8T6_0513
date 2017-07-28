@@ -166,7 +166,7 @@ static void TimerGetTempHumi_CallBack(void * arg)
 
 	   if(OS_IsTimeout(save_tick))
 	   {
-	      save_tick = OS_SetTimeout(SEC(60 * 1));
+	      save_tick = OS_SetTimeout(SEC(30 * 1));
 		  
 		  // ±£´æÎÂÊª¶È
           val = tDHT.temp_H * 10;
@@ -182,7 +182,7 @@ void DHT_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
   
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);  // PCLK2 = HCLK = 48MHz
+	DHT_RCC_APBPeriphClockCmdEnable();    
 
     GPIO_InitStructure.GPIO_Pin   = DHT_IO_Pin;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;

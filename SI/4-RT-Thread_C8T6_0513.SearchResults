@@ -1,4 +1,4 @@
----- Sys_GetRunTime Matches (3 in 3 files) ----
-Os_global.c (os\src):uint32_t FLASH_SAVE  Sys_GetRunTime(void)
-Os_global.h (os\inc):#define Sys_GetRunTime()   OS_GetSysTick()
-PM25Sensor.c (driver\src):	   os_printf("time = %ld ms\r\n\r\n", Sys_GetRunTime() * 10);
+---- save_tick Matches (3 in 1 files) ----
+DHT11.c (driver\src):static uint32_t save_tick = 0;  // ±£¥Ê ±º‰
+DHT11.c (driver\src):	   if(OS_IsTimeout(save_tick))
+DHT11.c (driver\src):	      save_tick = OS_SetTimeout(SEC(60 * 1));

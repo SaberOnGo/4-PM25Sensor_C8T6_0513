@@ -123,7 +123,7 @@ E_RESULT FILE_Write(char * file_name, char * write_buf)
 
    if(FILE_Open(&fileFIL, file_name) == APP_FAILED) return APP_FAILED;
    
-   res = f_lseek(&fileFIL, fileFIL.fsize); // 文件指针移到最后
+   res = f_lseek(&fileFIL, fileFIL.fsize); // 文件指针移到字符串结束位置
    os_printf("f_lseek res = %d, fptr = %ld, fsize = %ld\n", res, fileFIL.fptr, fileFIL.fsize);
    
    len = os_strlen(write_buf);
@@ -131,7 +131,7 @@ E_RESULT FILE_Write(char * file_name, char * write_buf)
    f_close(&fileFIL);
    os_printf("f_write res = %d, len = %d, bw = %d\n", res, len, bw);
    
-   return APP_SUCCESS;
+   return (E_RESULT)res;
 }
 
 
@@ -273,7 +273,7 @@ void FILE_FormatDisk(void)
 		    os_printf("FatFs mount success\r\n");
 
 			#if 1
-			res = FILE_Scan(UpdateDirPath, sizeof(UpdateDirPath), "Update.bin", FileOutPath, sizeof(FileOutPath));  // 查找升级文件
+			res = FILE_Scan(UpdateDirPath, sizeof(UpdateDirPath), "update.bin", FileOutPath, sizeof(FileOutPath));  // 查找升级文件
 			if(res == FR_OK)
 			{
 			    os_printf("finded file path = %s\n", FileOutPath);
