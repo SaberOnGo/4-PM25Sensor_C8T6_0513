@@ -1,4 +1,0 @@
----- save_tick Matches (3 in 1 files) ----
-DHT11.c (driver\src):static uint32_t save_tick = 0;  // ±£¥Ê ±º‰
-DHT11.c (driver\src):	   if(OS_IsTimeout(save_tick))
-DHT11.c (driver\src):	      save_tick = OS_SetTimeout(SEC(60 * 1));
