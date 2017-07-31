@@ -39,7 +39,7 @@
 #endif
 
 
-#define  SOFT_VERSION    "APP V1.133"
+#define  SOFT_VERSION    "APP V1.136"
 
 
 // 1 ŒÔ¿Ì…»«¯ = 4KB

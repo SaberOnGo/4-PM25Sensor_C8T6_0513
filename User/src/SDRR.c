@@ -202,8 +202,8 @@ E_RESULT SDRR_SaveSensorPoint(E_SensorType type, void  * data)
 	{
 	   if(OS_IsTimeout(save_time_out))
 	   {
-	       os_memset(&tSDRR, 0, sizeof(tSDRR));
-	       save_time_out = OS_SetTimeout(SEC(60));
+	       //os_memset(&tSDRR, 0, sizeof(tSDRR));
+	       save_time_out = OS_SetTimeout(SEC(30));
 	       os_printf("ready to wirte data point to file, tick = %ld\n", OS_GetSysTick());
 	       SDRR_WriteRecordToFile(SENSOR_TXT_FILE_NAME);
 	   }

@@ -166,7 +166,7 @@ static void TimerGetTempHumi_CallBack(void * arg)
 
 	   if(OS_IsTimeout(save_tick))
 	   {
-	      save_tick = OS_SetTimeout(SEC(30 * 1));
+	      save_tick = OS_SetTimeout(SEC(2 * 1));
 		  
 		  // ±£´æÎÂÊª¶È
           val = tDHT.temp_H * 10;

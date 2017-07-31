@@ -172,7 +172,40 @@
           <Name>-O14 -S0 -C0 -N00("ARM Cortex-M3") -D00(1BA00477) -L00(4) -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F10x_128 -FS08000000 -FL010000)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>169</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>I:\project\GitHub\4-PM25Sensor_C8T6_0513\Driver\src\DHT11.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>202</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>I:\project\GitHub\4-PM25Sensor_C8T6_0513\User\src\SDRR.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -288,6 +321,11 @@
           <count>22</count>
           <WinNumber>1</WinNumber>
           <ItemText>buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>23</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tSDRR</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -642,7 +680,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>27</TopLine>
+      <TopLine>26</TopLine>
       <CurrentLine>27</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\src\main.c</PathWithFileName>
@@ -670,7 +708,7 @@
       <Focus>0</Focus>
       <ColumnNumber>3</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>198</TopLine>
+      <TopLine>161</TopLine>
       <CurrentLine>162</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\src\Application.c</PathWithFileName>
@@ -698,8 +736,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\src\SDRR.c</PathWithFileName>
       <FilenameWithoutPath>SDRR.c</FilenameWithoutPath>
@@ -789,8 +827,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>73</TopLine>
+      <CurrentLine>74</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\OS\src\os_timer.c</PathWithFileName>
       <FilenameWithoutPath>os_timer.c</FilenameWithoutPath>
@@ -915,8 +953,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Driver\src\DHT11.c</PathWithFileName>
       <FilenameWithoutPath>DHT11.c</FilenameWithoutPath>
@@ -929,7 +967,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>111</TopLine>
+      <TopLine>119</TopLine>
       <CurrentLine>120</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Driver\src\stm32f1_temp_sensor.c</PathWithFileName>
@@ -1123,9 +1161,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>10</ColumnNumber>
+      <ColumnNumber>16</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>51</TopLine>
+      <TopLine>55</TopLine>
       <CurrentLine>56</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Component\USB\UsbApp\UsbApp.c</PathWithFileName>

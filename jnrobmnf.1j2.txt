@@ -1,0 +1,111 @@
+﻿Revert "V1.1 和V1.2版甲醛检测仪原理图提交"
+
+This reverts commit 26fa85e1c51eaabc3cc48d97e87e900b3b20c5bf.
+
+# Conflicts:
+#	SI/4-RT-Thread_C8T6_0513.SearchResults
+#	SI/4-RT-Thread_C8T6_0513.WK3
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# You are currently reverting commit 26fa85e.
+#
+# Changes to be committed:
+#	deleted:    Doc/1_PM25_STM8S003_Sch.SchDoc
+#	deleted:    Doc/1_PM25_STM8S003_Sch.pdf
+#	deleted:    Doc/3-PM25-STM32F103C8-170426.SchDoc
+#	deleted:    Doc/3-PM25-STM32F103C8-170426.pdf
+#	modified:   Driver/src/DHT11.c
+#	modified:   Driver/src/PM25Sensor.c
+#	modified:   Project/1_PM25Sensor_0221.uvgui.wen
+#	modified:   Project/1_PM25Sensor_0221.uvgui_wen.bak
+#	modified:   Project/1_PM25Sensor_0221.uvopt
+#	modified:   Project/1_PM25Sensor_0221_Target 1.dep
+#	modified:   Project/1_PM25Sensor_0221_uvopt.bak
+#	modified:   Project/List/1_PM25Sensor_0221.map
+#	modified:   Project/Obj/1_PM25Sensor_0221.axf
+#	modified:   Project/Obj/1_PM25Sensor_0221.fed
+#	modified:   Project/Obj/1_PM25Sensor_0221.hex
+#	modified:   Project/Obj/1_PM25Sensor_0221.htm
+#	modified:   Project/Obj/1_PM25Sensor_0221.plg
+#	modified:   Project/Obj/1_PM25Sensor_0221.tra
+#	modified:   Project/Obj/application.crf
+#	modified:   Project/Obj/application.o
+#	modified:   Project/Obj/dht11.crf
+#	modified:   Project/Obj/dht11.o
+#	modified:   Project/Obj/diskio.crf
+#	modified:   Project/Obj/diskio.o
+#	modified:   Project/Obj/f10x_flash_if.crf
+#	modified:   Project/Obj/f10x_flash_if.o
+#	modified:   Project/Obj/fatfs_demo.crf
+#	modified:   Project/Obj/fatfs_demo.o
+#	modified:   Project/Obj/hw_config.crf
+#	modified:   Project/Obj/hw_config.o
+#	modified:   Project/Obj/key_drv.crf
+#	modified:   Project/Obj/key_drv.o
+#	modified:   Project/Obj/lcd1602_drv.crf
+#	modified:   Project/Obj/lcd1602_drv.o
+#	modified:   Project/Obj/led_drv.crf
+#	modified:   Project/Obj/led_drv.o
+#	modified:   Project/Obj/main.crf
+#	modified:   Project/Obj/main.o
+#	modified:   Project/Obj/mass_mal.crf
+#	modified:   Project/Obj/mass_mal.o
+#	modified:   Project/Obj/memory.crf
+#	modified:   Project/Obj/memory.o
+#	modified:   Project/Obj/my_debug.crf
+#	modified:   Project/Obj/my_debug.o
+#	modified:   Project/Obj/os_global.crf
+#	modified:   Project/Obj/os_global.o
+#	modified:   Project/Obj/os_timer.crf
+#	modified:   Project/Obj/os_timer.o
+#	modified:   Project/Obj/pm25sensor.crf
+#	modified:   Project/Obj/pm25sensor.o
+#	modified:   Project/Obj/rom_flash_interface.crf
+#	modified:   Project/Obj/rom_flash_interface.o
+#	modified:   Project/Obj/sdrr.crf
+#	modified:   Project/Obj/sdrr.o
+#	modified:   Project/Obj/sfud_demo.crf
+#	modified:   Project/Obj/sfud_demo.o
+#	modified:   Project/Obj/sfud_port.crf
+#	modified:   Project/Obj/sfud_port.o
+#	modified:   Project/Obj/spi_flash_interface.crf
+#	modified:   Project/Obj/spi_flash_interface.o
+#	modified:   Project/Obj/stm32f1_temp_sensor.crf
+#	modified:   Project/Obj/stm32f1_temp_sensor.o
+#	modified:   Project/Obj/uart_drv.crf
+#	modified:   Project/Obj/uart_drv.o
+#	modified:   Project/Obj/uart_queue.crf
+#	modified:   Project/Obj/uart_queue.o
+#	modified:   Project/Obj/usb_prop.crf
+#	modified:   Project/Obj/usb_prop.o
+#	modified:   Project/Obj/usb_scsi.crf
+#	modified:   Project/Obj/usb_scsi.o
+#	modified:   Project/Obj/usbapp.crf
+#	modified:   Project/Obj/usbapp.o
+#	deleted:    SI/4-RT-Thread_C8T6_0513.IAB
+#	deleted:    SI/4-RT-Thread_C8T6_0513.IAD
+#	deleted:    SI/4-RT-Thread_C8T6_0513.IMB
+#	deleted:    SI/4-RT-Thread_C8T6_0513.IMD
+#	deleted:    SI/4-RT-Thread_C8T6_0513.PFI
+#	deleted:    SI/4-RT-Thread_C8T6_0513.PO
+#	deleted:    SI/4-RT-Thread_C8T6_0513.PR
+#	deleted:    SI/4-RT-Thread_C8T6_0513.PRI
+#	deleted:    SI/4-RT-Thread_C8T6_0513.PS
+#	deleted:    SI/4-RT-Thread_C8T6_0513.SearchResults
+#	deleted:    SI/4-RT-Thread_C8T6_0513.WK3
+#	modified:   User/inc/GlobalDef.h
+#	modified:   User/src/SDRR.c
+#	new file:   bin/1-10s/update.bin
+#	new file:   bin/1-10s/update.hex
+#	new file:   bin/2-30s/Update.bin
+#	new file:   bin/2-30s/Update.hex
+#	modified:   bin/2017-7-28/update.bin
+#	modified:   bin/2017-7-28/update.hex
+#	new file:   "bin/7-28-\345\216\237\345\247\213\347\211\210\346\234\254/update.bin"
+#	new file:   "bin/7-28-\345\216\237\345\247\213\347\211\210\346\234\254/update.hex"
+#
+
