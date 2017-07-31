@@ -1,4 +1,0 @@
----- Sys_GetRunTime Matches (3 in 3 files) ----
-Os_global.c (os\src):uint32_t FLASH_SAVE  Sys_GetRunTime(void)
-Os_global.h (os\inc):#define Sys_GetRunTime()   OS_GetSysTick()
-PM25Sensor.c (driver\src):	   os_printf("time = %ld ms\r\n\r\n", Sys_GetRunTime() * 10);

@@ -713,10 +713,10 @@ static void TimerCheckPM25_CallBack(void * arg)
            {
                static uint32_t sec = 0;
 
-			   if(OS_SetTimeout(sec) && (OS_GetSysTick() > SEC(15 * 60)))  // 开机后 15分钟开始记录
+			   if(OS_SetTimeout(sec) && (OS_GetSysTick() > SEC(5 * 60)))  // 开机后 15分钟开始记录
 			   {
 			       os_printf("save pm2.5 = %d ug/m3, tick = %ld s\n", mass_fraction, OS_GetSysTick() / 100);
-			       sec = OS_SetTimeout(SEC(5 * 60));  // 5 分钟记录一次
+			       sec = OS_SetTimeout(SEC(1 * 60));  // 5 分钟记录一次
 			       SDRR_SaveSensorPoint(SENSOR_HCHO, (void *)&mass_fraction);
 			   }
            }
