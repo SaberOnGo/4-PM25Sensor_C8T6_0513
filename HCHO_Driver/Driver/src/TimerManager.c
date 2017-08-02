@@ -1,0 +1,27 @@
+
+#include "TimerManager.h"
+#include "stm32f10x.h"
+#include "stm32f10x_it.h"
+
+static volatile uint32_t sSysTick = 0;
+volatile uint8_t flag10ms = 0;
+	
+void SysTick_Init(void)
+{
+    if(SysTick_Config(SystemCoreClock / 100))  // 10 ms 中断一次
+    {
+        while(1);
+    }
+}
+
+void SysTick_Increment(void)
+{
+   sSysTick++;
+   flag10ms = 1;
+}
+
+// 获取系统运行的tick值, 1 tick = 10 ms
+uint32_t OS_GetSysTick(void)
+{
+   return sSysTick;
+}
